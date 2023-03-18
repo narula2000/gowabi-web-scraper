@@ -2,9 +2,12 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
+OUTPUT_FILE = 'clinics.csv'
+TO_CSV = False
+DISPLAY_DATA = True
+
 URL_HEADER = 'https://www.gowabi.com'
 URL = f'{URL_HEADER}/en/search?filter[search_text]=botox&page='
-
 
 
 clinics = set()
@@ -13,11 +16,9 @@ clean_data = []
 for i in range(1, 45):
     req = requests.get(URL+str(i))
     soup = BeautifulSoup(req.content, 'html.parser')
-    divs = soup.find(
-        'div', {'class': 'providers_list_pagination infinit-scrol-box'})
+    divs = soup.find('div', {'class': 'providers_list_pagination'})
     if divs:
         headers = divs.find_all('h4')
-
         for header in headers:
             link = header.find('a')
             if link:
@@ -34,12 +35,17 @@ for clinic in clinics:
             service = div.find('strong')
             price = div.find('span', {'class': 'prices'})
             if service and price:
-                clean_data.append([name, service.text.strip(), price.text.strip(), url])
+                row = [name, service.text.strip(), price.text.strip(), url]
+                clean_data.append(row)
 
+columns = ['Clinic', 'Service', 'Price', 'URL']
+database = pd.DataFrame(clean_data, columns=columns)
 
-database = pd.DataFrame(clean_data, columns=['Clinic', 'Service', 'Price', 'URL'])
-database.to_csv('clinics.csv', index=False)
+if TO_CSV:
+    database.to_csv(OUTPUT_FILE, index=False)
+
+if DISPLAY_DATA:
+    print(database)
 
 if __name__ == '__main__':
-    print(database)
     print('Done')
