@@ -36,7 +36,7 @@ for clinic in clinics:
             price = div.find('span', {'class': 'prices'})
             if service and price:
                 clean_data.append([name, service.text.strip(), price.text.strip(), url])
-    break
+
 
 database = pd.DataFrame(clean_data, columns=['Clinic', 'Service', 'Price', 'URL'])
 database.to_csv('clinics.csv', index=False)
