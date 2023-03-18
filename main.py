@@ -23,7 +23,6 @@ for i in range(1, 45):
             if link:
                 url = link.get('href')
                 clinics.add((header.text.strip(), URL_HEADER+str(url)))
-    break
 
 for clinic in clinics:
     name, url = clinic
