@@ -1,6 +1,6 @@
 # Gowabi Web Scraper
 
-Scrap Gowabi for botox clinic and output to csv with their service and privces.
+Scrap [Gowabi for botox clinic](https://www.gowabi.com//en/search?filter[search_text]=botox&page=) and output to csv with their service and privces.
 
 # Example Output(Dataframe)
 
